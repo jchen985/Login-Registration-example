@@ -1,0 +1,31 @@
+{
+  "name": "login-registration-example",
+  "version": "1.0.0",
+  "description": "Node.js Express + MongoDB: Login and Registration example with Mongoose entry point: (index.js) server.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jchen985/Login-Registration-example.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Express",
+    "jwt",
+    "login",
+    "registration",
+    "authentication",
+    "authorization",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "Jianan Wang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jchen985/Login-Registration-example/issues"
+  },
+  "homepage": "https://github.com/jchen985/Login-Registration-example#readme"
+}
