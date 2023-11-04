@@ -27,5 +27,13 @@
   "bugs": {
     "url": "https://github.com/jchen985/Login-Registration-example/issues"
   },
-  "homepage": "https://github.com/jchen985/Login-Registration-example#readme"
+  "homepage": "https://github.com/jchen985/Login-Registration-example#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.0"
+  }
 }
