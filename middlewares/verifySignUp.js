@@ -8,6 +8,8 @@ const db = require("./models/index");  // db is an object that constains the Rol
 const ROLES = db.ROLES;
 const User = db.user;
 
+
+// deny if signup username/email exists
 checkDuplicateUsernameOrEmail = (req, res, next) => {
 
     // Username
@@ -40,6 +42,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
 };
 
 
+// deny if any of the roles does not match ["user", "moderator", "admin"]
 checkRolesExisted = (req, res, next) => {
     if (req.body.roles){
         for (let i =0; i < req.body.roles.length; i++){
