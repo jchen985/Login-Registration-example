@@ -1,12 +1,10 @@
 /*
 There are 3 main functions for Authentication:
 - signup: create new User in MongoDB database (role is user if not specifying role)
-- signin:
-
-find username of the request in database, if it exists
-compare password with password in database using bcrypt, if it is correct
-generate a token using jsonwebtoken
-return user information & access Token
+- signin: find username of the request in database, if it exists,
+    compare password with password in database using bcrypt, if it is correct
+    generate a token using jsonwebtoken
+    return user information & access Token
 - signout: clear current session.
 */
 
@@ -44,7 +42,7 @@ exports.signup = async (req, res) => {
         }else {  // if new account has now special roles, just asign regular user role
             Role.findOne({name: "user"}).then(role => {
                 user.roles = [role._id];
-                user.save().catch(err => {
+                await user.save().catch(err => {
                     res.status(500).send({message: err});
                     return;
                 })
@@ -62,8 +60,49 @@ exports.signup = async (req, res) => {
 };
 
 
-exports.signin = (req, res) => {
+exports.signin = async (req, res) => {
+    User.findOne({username: req.body.username}).populate("roles", "-__V").exec(user => {
+        if (!user){  // if no user is found, null
+            return res.status(404).send({message: "User Not Found."});
+        }
 
+        // if user found and successfully populated with "roles" fields
+        var passwordIsValid = bcrypt.compareSync(  // compare password in db vs password enetered
+            req.body.password,
+            user.password
+        );
+
+        if (!passwordIsValid){  // wrong password
+            return res.status(401).send({message: "Invalid Password"});
+        }
+
+        const token = jwt.sign(
+            {id: user.id},
+            config.secret,
+            {
+                algorithm: 'HS256',
+                allowInsecureKeySizes: true,
+                expiresIn: 86400  // 24 hours
+            });
+        
+        // store all authorized roles of this user for printing later
+        var authorities = [];
+
+        for (let i = 0; i < user.roles.length; i++){
+            authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+        }
+
+        req.session.token = token;
+
+        res.status(200).send({  // print user information
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            roles: authorities
+        });   
+    }).catch(err => {
+        res.status(500).send({message: err});
+    }); 
 };
 
 
