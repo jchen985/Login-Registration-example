@@ -27,7 +27,7 @@ exports.signup = async (req, res) => {
 
     await user.save().then(async user => {
         if (req.body.roles) {  // if new account wants special roles
-            Role.find({ name: { $in: req.body.roles } }).then(roles => {
+            Role.find({ name: { $in: req.body.roles } }).then(async roles => {
                 user.roles = roles.map(role => role._id);  // ????
                 await user.save().catch(err => {
                     res.status(500).send({message: err});
@@ -40,7 +40,7 @@ exports.signup = async (req, res) => {
                 return;
             });
         }else {  // if new account has now special roles, just asign regular user role
-            Role.findOne({name: "user"}).then(role => {
+            Role.findOne({name: "user"}).then(async role => {
                 user.roles = [role._id];
                 await user.save().catch(err => {
                     res.status(500).send({message: err});
