@@ -4,7 +4,7 @@ to verify a Signup action, 2 functions:
 - check if roles in the request is legal or not
 */
 
-const db = require("./models/index");  // db is an object that constains the Role and User collection 
+const db = require("../models/index");  // db is an object that constains the Role and User collection 
 const ROLES = db.ROLES;
 const User = db.user;
 
